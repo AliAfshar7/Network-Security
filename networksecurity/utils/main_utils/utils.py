@@ -37,7 +37,7 @@ def save_numpy_array_data(file_path: str, array: np.array):
         with open(file_path, "wb") as file_obj:
             np.save(file_obj, array)
     except Exception as e:
-        raise NetworkSecurityException(e,sys)
+        raise NetworkSecurityException(e,sys) from e
     
 def save_object (file_path: str , obj: object)-> None:
     try:
@@ -47,4 +47,31 @@ def save_object (file_path: str , obj: object)-> None:
             pickle.dump(obj, file_obj)
         logging.info("Exited the save_object method of MainUtils class")
     except Exception as e:
-        raise NetworkSecurityException(e, sys)
+        raise NetworkSecurityException(e, sys) from e
+    
+def load_object(file_path: str)-> object:
+    """
+    load object from file path
+    file_path: str location of object to load
+    return: object loaded
+    """
+    try:
+        if not os.path.exists(file_path):
+            raise Exception(f"The file: {file_path} is not existed")
+        with open(file_path, "rb") as file_obj:
+            print(file_obj)
+            return pickle.load(file_obj)
+    except Exception as e:
+        raise NetworkSecurityException(e,sys) from e 
+    
+def load_numpy_array_data(file_path: str) -> np.array:
+    """
+    load numpy array data from file
+    file_path: str location of file to load
+    return: np.array data loaded
+    """
+    try:
+        with open(file_path, "rb") as file_obj:
+            return np.load(file_obj)
+    except Exception as e:
+        raise NetworkSecurityException(e,sys) from e
